@@ -5,7 +5,7 @@ from rest_framework import status
 
 
 class AccountsTest(APITestCase):
-    def setUp(self) -> None:
+    def setUp(self):
         self.test_user = User.objects.create_user('testuser', 'test@example.com', 'testpassword')
 
         self.create_url = reverse('account-create')
@@ -16,8 +16,9 @@ class AccountsTest(APITestCase):
             'email': 'foobar@example.com',
             'password': 'somepassword'
         }
-        response = self.client.post(self.create_url, data, format='json')
-
+        response = self.client.post(self.create_url,
+                                    data=data, format='json')
+        print(response)
         self.assertEqual(User.objects.count(), 2)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['username'], data['username'])
